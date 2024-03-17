@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-place-details',
@@ -6,10 +8,16 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./place-details.page.scss'],
 })
 export class PlaceDetailsPage implements OnInit {
+  constructor(private navContrl: NavController, private router: Router) {}
 
-  constructor() { }
+  ngOnInit() {}
 
-  ngOnInit() {
+  goBack() {
+    this.navContrl.navigateBack('/places/tabs/discover');
+    // this.router.navigate(['/', 'places', 'tabs', 'discover']);
+    // this.router.navigateByUrl('/places/tabs/discover');
+
+    // pop will get only previous routing
+    this.navContrl.pop();
   }
-
 }

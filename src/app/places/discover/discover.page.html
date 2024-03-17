@@ -1,13 +1,44 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>discover</ion-title>
+  <ion-toolbar color="primary">
+    <ion-title>Discover Places</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">discover</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <ion-grid>
+    <ion-row>
+      <ion-col size="12" sizeSm="8" offsetSm="2" class="ion-text-center">
+        <ion-card>
+          <ion-card-header>
+            <ion-card-title>{{loadingPlaces[0].title | uppercase}}</ion-card-title>
+            <ion-card-subtitle>$ {{loadingPlaces[0].price}} / For Night</ion-card-subtitle>
+          </ion-card-header>
+          <ion-img [src]="loadingPlaces[0].imgUrl"></ion-img>
+          <ion-card-content>
+            <p>{{loadingPlaces[0].discription}}</p>
+          </ion-card-content>
+          <div>
+            <ion-button color="primary" fill="clear"
+              [routerLink]="['/','places','tabs','discover',loadingPlaces[0].id]">More</ion-button>
+          </div>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col size="12" sizeSm="8" offsetSm="2" class="ion-text-center">
+        <ion-list>
+          <ion-item *ngFor="let place of loadingPlaces.slice(1)"
+            [routerLink]="['/','places','tabs','discover',place.id]" detail>
+            <ion-thumbnail slot="start">
+              <ion-img [src]="place.imgUrl"></ion-img>
+            </ion-thumbnail>
+            <ion-label>
+              <h2>{{place.title | uppercase}}</h2>
+              <p>{{place.discription}}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>
