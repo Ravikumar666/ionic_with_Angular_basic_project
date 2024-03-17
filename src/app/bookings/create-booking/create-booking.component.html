@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>
+      {{place.title | uppercase}}
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="onCancel()" fill="clear">
+        <ion-icon name="trash" color="danger"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding ion-text-center">
+  <p>{{place.discription}}</p>
+  <ion-button color="primary" (click)="onBook()">Book</ion-button>
+</ion-content>
