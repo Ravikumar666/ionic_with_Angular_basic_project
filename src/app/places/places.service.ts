@@ -13,6 +13,8 @@ export class PlacesService {
       imgUrl:
         'https://assets.thehansindia.com/h-upload/2020/07/23/985774-lockdown-in-nellore.webp',
       price: '1400',
+      availableFrom: new Date('2019-01-01'),
+      availableTo: new Date('2019-12-31'),
     },
     {
       id: 'p2',
@@ -21,6 +23,8 @@ export class PlacesService {
       imgUrl:
         'https://blog.crisscrosstamizh.in/wp-content/uploads/2022/04/kavali-768x576.jpg',
       price: '1500',
+      availableFrom: new Date('2019-01-01'),
+      availableTo: new Date('2019-12-31'),
     },
     {
       id: 'p3',
@@ -29,6 +33,8 @@ export class PlacesService {
       imgUrl:
         'https://www.fabhotels.com/blog/wp-content/uploads/2019/03/Sri-Venkateswara-Swamy-Temple-Tirumala.jpg',
       price: '1200',
+      availableFrom: new Date('2019-01-01'),
+      availableTo: new Date('2019-12-31'),
     },
   ];
   constructor() {}

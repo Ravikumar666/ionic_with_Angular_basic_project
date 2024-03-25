@@ -77,7 +77,7 @@ export class PlaceDetailsPage implements OnInit {
     this.modelCntrl
       .create({
         component: CreateBookingComponent,
-        componentProps: { place: this.place },
+        componentProps: { place: this.place, selectedMode: mode },
       })
       .then((modelEl) => {
         modelEl.present();
