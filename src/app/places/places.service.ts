@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Place } from './offers/place.model';
+import { AuthService } from '../auth/auth.service';
+import { BehaviorSubject, Observable, map, take } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PlacesService {
-  private _places: Place[] = [
+  private _places = new BehaviorSubject<Place[]>([
     {
       id: 'p1',
       title: 'nellore',
@@ -15,6 +17,7 @@ export class PlacesService {
       price: '1400',
       availableFrom: new Date('2019-01-01'),
       availableTo: new Date('2019-12-31'),
+      userId: '',
     },
     {
       id: 'p2',
@@ -25,6 +28,7 @@ export class PlacesService {
       price: '1500',
       availableFrom: new Date('2019-01-01'),
       availableTo: new Date('2019-12-31'),
+      userId: '',
     },
     {
       id: 'p3',
@@ -35,19 +39,45 @@ export class PlacesService {
       price: '1200',
       availableFrom: new Date('2019-01-01'),
       availableTo: new Date('2019-12-31'),
+      userId: '',
     },
-  ];
-  constructor() {}
+  ]);
+  constructor(private auth: AuthService) {}
 
-  get Place(): Place[] {
-    return [...this._places];
+  get Place(): Observable<Place[]> {
+    return this._places.asObservable();
   }
 
   getPlace(id: string | null): any {
-    return {
-      ...this._places.find((p) => {
-        return p.id === id;
-      }),
-    };
+    return this.Place.pipe(
+      take(1),
+      map((places) => {
+        return { ...places.find((p) => p.id === id) };
+      })
+    );
+  }
+
+  addPlace(
+    title: string,
+    discription: string,
+    price: string,
+    datadFrom: Date,
+    dateTo: Date
+  ) {
+    const randomImgUrl =
+      'https://www.fabhotels.com/blog/wp-content/uploads/2019/03/Sri-Venkateswara-Swamy-Temple-Tirumala.jpg';
+    const newPlace = new Place(
+      Math.random().toString(),
+      title,
+      discription,
+      randomImgUrl,
+      price,
+      datadFrom,
+      dateTo,
+      this.auth.userId
+    );
+    this.Place.pipe(take(1)).subscribe((places) => {
+      this._places.next(places.concat(newPlace));
+    });
   }
 }

@@ -7,6 +7,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { IonDatetime } from '@ionic/angular';
+import { PlacesService } from '../../places.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-new-offer',
@@ -15,7 +17,11 @@ import { IonDatetime } from '@ionic/angular';
 })
 export class NewOfferPage implements OnInit {
   form!: FormGroup;
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private placeService: PlacesService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.form = this.fb.group({
@@ -29,7 +35,10 @@ export class NewOfferPage implements OnInit {
   onCreateOffer() {
     if (this.form.invalid) return;
     const { title, dateTo, dateFrom, discription, price } = this.allRawValues;
-    console.log(title, dateTo, dateFrom, discription, price);
+    this.placeService.addPlace(title, discription, price, dateFrom, dateTo);
+    this.form.reset();
+    this.router.navigateByUrl('/places/tabs/offers');
+    console.log(this.placeService.Place);
   }
 
   get allRawValues(): { [key: string]: any } {

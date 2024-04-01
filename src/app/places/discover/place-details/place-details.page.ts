@@ -8,6 +8,7 @@ import {
 import { CreateBookingComponent } from '../../../bookings/create-booking/create-booking.component';
 import { Place } from '../../offers/place.model';
 import { PlacesService } from '../../places.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-place-details',
@@ -16,6 +17,7 @@ import { PlacesService } from '../../places.service';
 })
 export class PlaceDetailsPage implements OnInit {
   place!: Place;
+  sub$!: Subscription;
   constructor(
     private navContrl: NavController,
     private activeRoute: ActivatedRoute,
@@ -31,7 +33,11 @@ export class PlaceDetailsPage implements OnInit {
         return;
       }
       const placeId = paramMap.get('placeId');
-      this.place = this.placeService.getPlace(placeId);
+      this.sub$ = this.placeService
+        .getPlace(placeId)
+        .subscribe((place: any) => {
+          this.place = place;
+        });
     });
   }
 
@@ -88,5 +94,9 @@ export class PlaceDetailsPage implements OnInit {
           console.log(resultData.data);
         }
       });
+  }
+
+  ngOnDestroy() {
+    this.sub$?.unsubscribe();
   }
 }

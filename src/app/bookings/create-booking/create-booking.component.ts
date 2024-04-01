@@ -28,7 +28,7 @@ export class CreateBookingComponent implements OnInit {
             (availableTo.getTime() -
               7 * 24 * 60 * 60 * 1000 -
               availableFrom.getTime())
-      ).toISOString();
+      )?.toISOString();
 
       this.endDate = new Date(
         new Date(this.startDate).getTime() +
@@ -36,7 +36,7 @@ export class CreateBookingComponent implements OnInit {
             (new Date(this.startDate).getTime() +
               6 * 24 * 60 * 60 * 100 -
               new Date(this.startDate).getTime())
-      ).toISOString();
+      )?.toISOString();
     }
   }
 

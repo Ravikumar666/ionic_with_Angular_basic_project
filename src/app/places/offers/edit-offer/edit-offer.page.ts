@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PlacesService } from '../../places.service';
 import { NavController } from '@ionic/angular';
 import { Place } from '../place.model';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-edit-offer',
@@ -13,6 +14,7 @@ import { Place } from '../place.model';
 export class EditOfferPage implements OnInit {
   form!: FormGroup;
   place!: Place;
+  sub$!: Subscription;
   constructor(
     private fb: FormBuilder,
     private activedRoute: ActivatedRoute,
@@ -27,14 +29,18 @@ export class EditOfferPage implements OnInit {
         return;
       }
       const placeId = paramMap.get('placeId');
-      this.place = this.placeService.getPlace(placeId);
-      this.form = this.fb.group({
-        title: [this.place.title, [Validators.required]],
-        discription: [
-          this.place.discription,
-          [Validators.required, Validators.maxLength(180)],
-        ],
-      });
+      this.sub$ = this.placeService
+        .getPlace(placeId)
+        .subscribe((place: any) => {
+          this.place = place;
+          this.form = this.fb.group({
+            title: [this.place.title, [Validators.required]],
+            discription: [
+              this.place.discription,
+              [Validators.required, Validators.maxLength(180)],
+            ],
+          });
+        });
     });
   }
 
@@ -42,5 +48,9 @@ export class EditOfferPage implements OnInit {
     if (this.form.invalid) return;
     this.place = this.form.getRawValue();
     this.navCntrl.navigateBack('/places/tabs/offers');
+  }
+
+  ngOnDestroy() {
+    this.sub$?.unsubscribe();
   }
 }

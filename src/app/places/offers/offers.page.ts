@@ -3,6 +3,7 @@ import { PlacesService } from '../places.service';
 import { Place } from './place.model';
 import { IonItemSliding, MenuController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-offers',
@@ -11,6 +12,7 @@ import { Router } from '@angular/router';
 })
 export class OffersPage implements OnInit {
   loadOffers: Place[] = [];
+  sub$!: Subscription;
   constructor(
     private placeService: PlacesService,
     private menuContrl: MenuController,
@@ -18,7 +20,13 @@ export class OffersPage implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.loadOffers = this.placeService.Place;
+    this.sub$ = this.placeService.Place.subscribe((places) => {
+      this.loadOffers = places;
+    });
+  }
+
+  ngOnDestroy() {
+    this.sub$?.unsubscribe();
   }
 
   openMenu() {
